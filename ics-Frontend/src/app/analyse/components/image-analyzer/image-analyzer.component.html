@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="header-analyzer">
+  <nav>
+    <ul class="nav-list-analyzer">
+      <li class="nav-list-item-analyzer active" ><a id="second" routerLink="/">Analyse</a></li>
+      <li class="nav-list-item-analyzer"><a id="first" routerLink="/gallery">Gallery</a></li>
+    </ul>
+  </nav>
+</header>
+<div class = "container-analyzer">
+  <div id="contentWrapper">
+    <form class="myForm-analyzer" (ngSubmit)="addURL($event)" [formGroup]="imgFormGroup">
+      <label for="inputURL">Point to an image for tag...</label>
+      <input id="inputURL" name="inputURL" [formControlName]="'inputURL'" type="text" placeholder="Enter the URL...">
+      <button id="analyseButton" type="submit">Analyse</button>
+    </form>
+
+    <div *ngIf="loadPopUp">
+      <app-image-container
+        [image]="image"
+        (exit)="exitPopUp($event)">
+      </app-image-container>
+    </div>
+  </div>
+</div>
+</body>
+</html>

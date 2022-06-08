@@ -1,0 +1,122 @@
+body {
+  --text-color: #222;
+  --bkg-color: #fff;
+  --btn-txt-color: white;
+  --btn-bg-color: rgb(11, 88, 160);
+}
+ header.dark-theme {
+  --text-color: #eee;
+  --bkg-color: #252222;
+  --btn-txt-color: rgb(46, 43, 43);
+  --btn-bg-color: rgb(20, 211, 195);
+}
+
+body {
+  background: var(--bkg-color);
+}
+
+h1,
+p {
+  color: var(--text-color);
+}
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 2px;
+  color: var(--btn-txt-color);
+  background-color: var(--btn-bg-color);
+}
+
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Rubik', sans-serif;
+  color: hsl(0, 0%, 17%);
+}
+
+body {
+  background: linear-gradient(90deg, rgba(71,66,159,1) 17%, rgba(92,129,236,1) 51%);
+}
+
+.container-analyzer {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.header-analyzer {
+  padding-right:20px;
+  background-color: white;
+}
+
+.nav-list-analyzer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+  margin-right: 30px;
+}
+
+.nav-list-item-analyzer {
+  list-style-type: none;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 15px 30px;
+}
+
+.nav-list-item-analyzer.active {
+  border-radius: 40px;
+  border: solid white 3px;
+  background-color: white;
+  box-shadow: 1px 1px 6px -2px black;
+  padding: 5px 30px;
+}
+
+.nav-list-item-analyzer a{
+  text-decoration: none;
+}
+
+.myForm-analyzer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 80px;
+  margin-top: 30px;
+  min-height: 500px;
+}
+
+label {
+  font-size: 45px;
+  margin: 0 auto;
+  margin-top: 40px;
+  color: white;
+  font-weight: 600;
+}
+
+#inputURL {
+  max-width: 500px;
+  font-size: 24px;
+  border: none;
+  box-shadow: 1px 1px 6px -2px black;
+  border-radius: 40px;
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+#inputURL:focus {
+  outline: none;
+}
+
+#analyseButton {
+  font-size: 20px;
+  border-radius: 40px;
+  background: #010204cc;
+  border: none;
+  box-shadow: 1px 1px 6px -2px black;
+  color: white;
+  font-weight: bold;
+  min-width: 150px;
+  padding: 10px 20px;
+}

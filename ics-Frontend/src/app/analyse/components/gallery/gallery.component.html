@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,500;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+</head>
+<body>
+<header class="header-gallery">
+  <form class="myForm-gallery" (ngSubmit)="searchByTag()" [formGroup]="tagFormGroup">
+    <input id="inputTag" name="inputTag" [formControlName]="'inputTag'" type="text"
+           placeholder="Search images by tag...">
+    <button id="filterButton" type="submit"><fa-icon class="icon-search" [icon]="faSearch"></fa-icon></button>
+  </form>
+  <nav>
+    <ul class="nav-list-gallery">
+      <li class="nav-list-item-gallery"><a id="second" routerLink="/">Analyse</a></li>
+      <li class="nav-list-item-gallery active" (click)="ngOnInit();"><a id="first" routerLink="/gallery">Gallery</a></li>
+    </ul>
+  </nav>
+</header>
+<div class="container-gallery">
+  <div class="imagesWrapper">
+    <div *ngFor="let img of images" class="item">
+      <fa-icon class = "icon-exp" [icon]="faExpand"></fa-icon>
+      <img src="{{ img.url}}" (click)="getImageDetails(img.url)" alt="">
+    </div>
+  </div>
+</div>
+<div *ngIf="loadPopUp">
+  <app-image-container
+    [image]="image"
+    (exit)="exitPopUp($event)"
+  ></app-image-container>
+</div>
+</body>
+</html>

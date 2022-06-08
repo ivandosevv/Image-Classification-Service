@@ -1,0 +1,39 @@
+<div class="imageWrapper">
+  <button type="button" id="exitPopUp" (click)="exitContainer($event)">X</button>
+
+  <div class="actualContentWide" *ngIf="isTall()">
+    <div class = "image">
+      <img src="{{ image?.url}}" alt="">
+    </div>
+  <div class = "tags-wide">
+    <div *ngFor="let tg of image?.connections" >
+      <a title="Confidence: {{currConfidence}}%"class="connectTag" id="first" routerLink="/gallery" (mouseover)="showPopOver(tg.confidence)"
+         (mouseout)="hidePopOver()"
+         (click)="saveItemToStorage(tg.name); exitContainer($event); ">
+        {{tg?.name}}
+      </a>
+    </div>
+  </div>
+    <span class = "date">Added on:  {{convertDate(image?.addedOn)}}</span>
+
+  </div>
+
+
+  <div class="actualContentHigh" *ngIf="isWide()">
+    <div class = "image">
+      <img src="{{ image?.url}}" alt="">
+    </div>
+    <div class = "info">
+    <div class = "tags-high">
+      <div class = "tag-item" *ngFor="let tg of image?.connections">
+        <a title="Confidence: {{currConfidence}}%"class="connectTag" id="first" routerLink="/gallery" (mouseover)="showPopOver(tg.confidence)"
+           (mouseout)="hidePopOver()"
+           (click)="saveItemToStorage(tg.name); exitContainer($event); ">
+          {{tg?.name}}
+        </a>
+      </div>
+    </div>
+      <span class = "date">Added on:  <br> {{convertDate(image?.addedOn)}}</span>
+
+  </div>
+</div>
