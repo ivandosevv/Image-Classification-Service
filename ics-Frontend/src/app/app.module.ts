@@ -19,20 +19,27 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import {OverlayModule} from '@angular/cdk/overlay';
 import { MatSliderModule } from '@angular/material/slider';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LoginComponent } from './analyse/components/login/login.component';
+import { RegisterComponent } from './analyse/components/register/register.component';
+import { NavbarComponent } from './analyse/components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
+    RegisterComponent,
+    NavbarComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    AnalyseModule,
-    RouterModule,
-    FontAwesomeModule,
-    //MatAutocompleteModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        AnalyseModule,
+        RouterModule,
+        FontAwesomeModule,
+        FormsModule,
+        //MatAutocompleteModule
+    ],
   exports: [
     RouterModule
   ],

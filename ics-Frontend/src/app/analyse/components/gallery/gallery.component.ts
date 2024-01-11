@@ -7,6 +7,7 @@ import {Tag} from "../../models/tag-model.models";
 import {filter, map, Observable, startWith, timer} from "rxjs";
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faExpand } from '@fortawesome/free-solid-svg-icons';
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-gallery',
@@ -29,7 +30,7 @@ export class GalleryComponent implements OnInit {
   faSearch = faSearch;
   faExpand = faExpand;
 
-  constructor(private storageService: StorageService,
+  constructor(private storageService: StorageService, private authService: AuthService,
   private formBuilder: FormBuilder) {
     this._loadPopUp = false;
     this._tagFormGroup = this.formBuilder.group({
@@ -41,6 +42,7 @@ export class GalleryComponent implements OnInit {
 
   ngOnInit(): void {
     this.setImages();
+    this.loadUserSpecificImages();
 
     this.storageService.getAllTags().subscribe(
       (response: Tag[]) => {this._options = response;},
@@ -64,6 +66,22 @@ export class GalleryComponent implements OnInit {
   displayProper(tag: Tag): string {
     return tag && tag.name ? tag.name: '';
   }
+
+    private loadUserSpecificImages(): void {
+        const currentUser = this.authService.getCurrentUser();
+        if (currentUser) {
+            this.storageService.getImagesByUser(currentUser.id).subscribe(
+                (response: Image[]) => {
+                    this._images = response;
+                },
+                (error: HttpErrorResponse) => {
+                    alert(error.message);
+                }
+            );
+        } else {
+            // Handle case when no user is logged in or redirect to login
+        }
+    }
 
   public loadImagesByTag(): void {
     this.storageService.getAll().subscribe(

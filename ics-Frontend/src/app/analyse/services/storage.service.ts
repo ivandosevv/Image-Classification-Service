@@ -38,4 +38,8 @@ export class StorageService {
   public getImagesByTag(tag: string) {
     return this.httpClient.get<Image[]>(`${this.api}/tags/` + tag);
   }
+
+    public getImagesByUser(userId: number): Observable<Image[]> {
+        return this.httpClient.get<Image[]>(`${this.api}/images/user/${userId}`);
+    }
 }

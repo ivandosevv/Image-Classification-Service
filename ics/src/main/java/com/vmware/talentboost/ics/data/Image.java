@@ -22,6 +22,10 @@ public class Image {
     @Column(name = "url", unique = true, nullable = false)
     private String url;
 
+	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
+
     @Column(name = "added_on")
     private Timestamp addedOn;
 
@@ -100,6 +104,14 @@ public class Image {
     public void setHeight(double height) {
         this.height = height;
     }
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
     @Override
     public String toString() {
