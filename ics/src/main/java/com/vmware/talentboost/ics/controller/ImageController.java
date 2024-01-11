@@ -1,6 +1,5 @@
 package com.vmware.talentboost.ics.controller;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.vmware.talentboost.ics.analyzer.ImageAnalyzer;
 import com.vmware.talentboost.ics.data.Connection;
 import com.vmware.talentboost.ics.data.Image;

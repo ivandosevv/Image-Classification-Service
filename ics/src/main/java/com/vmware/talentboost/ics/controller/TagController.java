@@ -10,6 +10,7 @@ import com.vmware.talentboost.ics.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -17,37 +18,37 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("tags")
 @CrossOrigin
 public class TagController {
-    private final TagService tagService;
+	private final TagService tagService;
 
-    @Autowired
-    public TagController(TagService tagService) {
-        this.tagService = tagService;
-    }
+	@Autowired
+	public TagController(TagService tagService) {
+		this.tagService = tagService;
+	}
 
-    @GetMapping
-    public List<Tag> get() {
-        return tagService.getAllTags();
-    }
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Tag>> getAllTags() {
+		List<Tag> tags = tagService.getAllTags();
+		return ResponseEntity.ok(tags); // Simplified return statement
+	}
 
-    @GetMapping("{name}")
-    public List<Image> get(@PathVariable String name) {
-        try {
-            List<Connection> connections = tagService.getConnectionsByTagName(name);
-            List<Image> result = new ArrayList<>();
-            for (Connection connection: connections) {
-                result.add(connection.getImage());
-            }
-
-            return result;
-        } catch (NoSuchElementException e) {
-            throw new IllegalArgumentException(String.format("Tag with name %d not found", name));
-        }
-    }
+	@GetMapping(value = "{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Image>> getImagesByTagName(@PathVariable String name) {
+		try {
+			List<Connection> connections = tagService.getConnectionsByTagName(name);
+			List<Image> images = connections.stream()
+					.map(Connection::getImage)
+					.collect(Collectors.toList());
+			return ResponseEntity.ok(images); // Simplified return statement
+		} catch (NoSuchElementException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody final TagDto tagDto) {

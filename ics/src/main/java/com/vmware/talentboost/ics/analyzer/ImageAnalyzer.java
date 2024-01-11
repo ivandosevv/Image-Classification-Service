@@ -1,6 +1,5 @@
 package com.vmware.talentboost.ics.analyzer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vmware.talentboost.ics.data.Connection;
 import com.vmware.talentboost.ics.data.Tag;
 import org.springframework.data.util.Pair;
