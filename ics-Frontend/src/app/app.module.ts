@@ -22,6 +22,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoginComponent } from './analyse/components/login/login.component';
 import { RegisterComponent } from './analyse/components/register/register.component';
 import { NavbarComponent } from './analyse/components/navbar/navbar.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -38,6 +39,8 @@ import { NavbarComponent } from './analyse/components/navbar/navbar.component';
         RouterModule,
         FontAwesomeModule,
         FormsModule,
+        MatSnackBarModule,
+        BrowserAnimationsModule,
         //MatAutocompleteModule
     ],
   exports: [

@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("tags")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 public class TagController {
 	private final TagService tagService;
 
@@ -31,7 +31,7 @@ public class TagController {
 		this.tagService = tagService;
 	}
 
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping
 	public ResponseEntity<List<Tag>> getAllTags() {
 		List<Tag> tags = tagService.getAllTags();
 		return ResponseEntity.ok(tags); // Simplified return statement

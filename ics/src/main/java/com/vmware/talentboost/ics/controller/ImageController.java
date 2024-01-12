@@ -26,7 +26,7 @@ import java.sql.Timestamp;
 import java.util.*;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("images")
 public class ImageController {
     private final ImageService imageService;

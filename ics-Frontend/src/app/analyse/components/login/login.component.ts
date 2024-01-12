@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -6,7 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css']
+    styleUrls: ['./login.component.css'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class LoginComponent {
     username!: string;
@@ -19,7 +20,7 @@ export class LoginComponent {
         this.authService.login(this.username, this.password).subscribe(
             (response: any) => {
                 console.log('Logged in successfully!', response);
-                this.router.navigate(['/dashboard']); // Navigate to dashboard or home page after successful login
+                this.router.navigate(['/index']); // Navigate to dashboard or home page after successful login
             },
             (error: any) => {
                 this.snackBar.open('Login failed: ' + error.message, 'Close', {

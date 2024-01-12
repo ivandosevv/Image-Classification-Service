@@ -11,7 +11,8 @@ const routes: Routes = [
   {path: "index", component: ImageAnalyzerComponent},
     { path: "login", component: LoginComponent },
     { path: "register", component: RegisterComponent },
-    { path: "", redirectTo: '/login', pathMatch: 'full' }
+    { path: "", redirectTo: '/index', pathMatch: 'full' },
+    { path: '**', component: LoginComponent }
   //{path: "tags", component: ImageContainerComponent}
 ];
 
