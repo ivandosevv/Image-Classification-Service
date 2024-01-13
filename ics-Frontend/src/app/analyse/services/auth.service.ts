@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Observable, tap} from 'rxjs';
+import {catchError, Observable, tap, throwError} from 'rxjs';
 import {Router} from "@angular/router";
 
 @Injectable({
@@ -14,16 +14,33 @@ export class AuthService {
     login(username: string, password: string): Observable<any> {
         return this.http.post<any>(`${this.apiUrl}/login`, { username, password }).pipe(
             tap(response => {
-                localStorage.setItem('user', JSON.stringify(response.user));
-                localStorage.setItem('token', response.token);
+                if (response.username) {
+                    localStorage.setItem('user', JSON.stringify({ username: response.username, password: response.password }));
+                    console.log('User data saved:', response.username);
+                } else {
+                    console.error('Login response missing username:', response);
+                }
+            }),
+            catchError(error => {
+                // Handle error
+                console.error('Login error:', error);
+                return throwError(error);
             })
         );
     }
 
     getCurrentUser() {
         const userData = localStorage.getItem('user');
-        return userData ? JSON.parse(userData) : null;
+        if (userData) {
+            try {
+                return JSON.parse(userData);
+            } catch (e) {
+                console.error('Error parsing user data:', e);
+            }
+        }
+        return null;
     }
+
 
     register(username: string, password: string): Observable<any> {
         return this.http.post(`${this.apiUrl}/register`, { username, password });

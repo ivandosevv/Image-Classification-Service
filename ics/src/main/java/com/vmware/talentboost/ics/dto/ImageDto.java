@@ -6,6 +6,8 @@ import java.util.Date;
 public class ImageDto {
     public int id;
 
+	public String username;
+
     public String URL;
 
     public Timestamp addedOn;

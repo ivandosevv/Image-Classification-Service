@@ -6,6 +6,7 @@ import com.vmware.talentboost.ics.data.Image;
 import com.vmware.talentboost.ics.data.Tag;
 import com.vmware.talentboost.ics.data.User;
 import com.vmware.talentboost.ics.dto.ImageDto;
+import com.vmware.talentboost.ics.dto.ImageUploadRequest;
 import com.vmware.talentboost.ics.service.ConnectionService;
 import com.vmware.talentboost.ics.service.ImageService;
 import com.vmware.talentboost.ics.service.TagService;
@@ -103,12 +104,13 @@ public class ImageController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody final String imageURL) throws IOException {
-		User currentUser = userService.getCurrentUser();
-		if (currentUser == null) {
+    public ResponseEntity<Void> create(@RequestBody final ImageUploadRequest request) throws IOException {
+		User user = userService.authenticate(request.username, request.password);
+		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 
+		String imageURL = request.imageUrl;
         if (!StringUtils.hasText(imageURL)) {
             throw new IllegalArgumentException("Image URL must be specified.");
         }

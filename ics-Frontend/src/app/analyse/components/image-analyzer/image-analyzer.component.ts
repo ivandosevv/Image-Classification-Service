@@ -62,6 +62,11 @@ export class ImageAnalyzerComponent implements OnInit {
 
     public addURL(event: Event): void {
         event.preventDefault();
+        const currUser = this.authService.getCurrentUser();
+        if (!currUser) {
+            console.error('No current user found');
+            return;
+        }
 
         if (!this._imgFormGroup.valid) {
             alert('Current form is invalid');
@@ -78,24 +83,22 @@ export class ImageAnalyzerComponent implements OnInit {
 
         const currentUser = this.authService.getCurrentUser();
         if (currentUser) {
-            this.storageService.add(actualURL, currentUser.username, currentUser.password).subscribe(
-                response => {
-                    console.log('Response received:', response);
-                    // For debugging, comment out the JSON parsing and just log the response
-                    // try {
-                    //   this._tags$ = JSON.parse(response);
-                    //   this._loadPopUp = true;
-                    // } catch (e) {
-                    //   console.error('Error parsing response:', e);
-                    // }
-                },
-                error => {
-                    console.error('Error in request:', error);
-                }
-            );
-        } else {
-            console.error('No current user found');
+            this.storageService.add(actualURL, currentUser.username, currentUser.password).subscribe(() => {
+                // Call backend service to analyze the image and fetch tags
+                this.storageService.analyzeImage(actualURL).subscribe(
+                    (response: Tag[]) => {
+                        this._tags$ = response;
+                        this._loadPopUp = true; // Assuming this controls the display of tags
+                    },
+                    error => {
+                        console.error('Error:', error);
+                        console.log('Sent credentials:', currentUser.username, currentUser.password);
+                    }
+                );
+            });
         }
+
+        return;
     }
 
 

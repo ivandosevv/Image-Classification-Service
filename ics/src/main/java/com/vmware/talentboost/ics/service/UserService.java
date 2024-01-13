@@ -47,8 +47,12 @@ public class UserService implements UserDetailsService {
 
 	public User authenticate(String username, String password) {
 		User user = userRepository.findByUsername(username);
-		if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-			return user;
+		if (user != null) {
+			boolean passwordMatch = passwordEncoder.matches(password, user.getPassword());
+			System.out.println("User found: " + user.getUsername() + ", Password match: " + passwordMatch);
+			if (passwordMatch) {
+				return user;
+			}
 		}
 		return null;
 	}

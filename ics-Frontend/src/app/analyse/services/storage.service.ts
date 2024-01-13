@@ -24,17 +24,10 @@ export class StorageService {
         });
     }
 
-    public add(itemToAdd: string, username: string, password: string) {
-        const headers = new HttpHeaders({ Authorization: this.createBasicAuthToken(username, password) });
-        return this.httpClient.post(`${this.api}/images/analyze`, itemToAdd, { headers, observe: 'response' })
-            .pipe(
-                tap(response => console.log('Raw Response:', response)),
-                catchError(error => {
-                    console.error('Error in request:', error);
-                    return throwError(() => new Error(error.message));
-                })
-            );
+    add(imageUrl: string, username: string, password: string): Observable<any> {
+        return this.httpClient.post(`${this.api}/images`, { imageUrl, username, password });
     }
+
 
     public get(url: string) {
     return this.httpClient.get<Image>(`${this.api}/images/url?url=` + url);
