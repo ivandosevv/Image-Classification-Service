@@ -57,20 +57,10 @@ export class GalleryComponent implements OnInit {
       map(name => (name ? this.filterProper(name) : this.options.slice()))
     ).subscribe((myTags: Tag[]) => this.correctTags = myTags);
   }
-
-  private filterProper(name: string): Tag[] {
-    const filterValue = name.toLowerCase();
-    return this.options.filter(option => option.name.toLowerCase().startsWith(filterValue));
-  }
-
-  displayProper(tag: Tag): string {
-    return tag && tag.name ? tag.name: '';
-  }
-
     private loadUserSpecificImages(): void {
         const currentUser = this.authService.getCurrentUser();
         if (currentUser) {
-            this.storageService.getImagesByUser(currentUser.id).subscribe(
+            this.storageService.getImagesByUser(currentUser.id, currentUser.username, currentUser.password).subscribe(
                 (response: Image[]) => {
                     this._images = response;
                 },
@@ -82,6 +72,15 @@ export class GalleryComponent implements OnInit {
             // Handle case when no user is logged in or redirect to login
         }
     }
+
+  private filterProper(name: string): Tag[] {
+    const filterValue = name.toLowerCase();
+    return this.options.filter(option => option.name.toLowerCase().startsWith(filterValue));
+  }
+
+  displayProper(tag: Tag): string {
+    return tag && tag.name ? tag.name: '';
+  }
 
   public loadImagesByTag(): void {
     this.storageService.getAll().subscribe(

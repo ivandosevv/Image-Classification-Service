@@ -18,4 +18,9 @@ export class ImageService {
         return this.http.post(`${this.apiUrl}/upload`, imageData, { headers });
     }
 
+    addAndAnalyzeImage(imageUrl: string): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/images`, imageUrl);
+    }
+
+
 }

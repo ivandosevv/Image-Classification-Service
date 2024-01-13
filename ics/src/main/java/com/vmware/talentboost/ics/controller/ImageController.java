@@ -4,6 +4,7 @@ import com.vmware.talentboost.ics.analyzer.ImageAnalyzer;
 import com.vmware.talentboost.ics.data.Connection;
 import com.vmware.talentboost.ics.data.Image;
 import com.vmware.talentboost.ics.data.Tag;
+import com.vmware.talentboost.ics.data.User;
 import com.vmware.talentboost.ics.dto.ImageDto;
 import com.vmware.talentboost.ics.service.ConnectionService;
 import com.vmware.talentboost.ics.service.ImageService;
@@ -15,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import com.vmware.talentboost.ics.service.UserService;
 import org.json.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -32,13 +35,18 @@ public class ImageController {
     private final ImageService imageService;
     private final TagService tagService;
     private final ConnectionService connectionService;
+
+	private final UserService userService;
+
     private final int MIN_CONFIDENCE = 30;
 
     @Autowired
-    public ImageController(ImageService imageService, TagService tagService, ConnectionService connectionService) {
+    public ImageController(ImageService imageService, TagService tagService, ConnectionService connectionService,
+			UserService userService) {
         this.imageService = imageService;
         this.tagService = tagService;
         this.connectionService = connectionService;
+		this.userService = userService;
     }
 
     @GetMapping
@@ -96,6 +104,11 @@ public class ImageController {
     @Transactional
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody final String imageURL) throws IOException {
+		User currentUser = userService.getCurrentUser();
+		if (currentUser == null) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
         if (!StringUtils.hasText(imageURL)) {
             throw new IllegalArgumentException("Image URL must be specified.");
         }
@@ -111,8 +124,9 @@ public class ImageController {
 
             this.imageService.addImage(toAdd);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
         String jsonResponse = ImageAnalyzer.sendRequestToAnalyzer(imageURL);
         System.out.println(jsonResponse);
@@ -120,23 +134,22 @@ public class ImageController {
         JSONObject result = obj.getJSONObject("result");
         JSONArray arr = result.getJSONArray("tags");
 
-        for (int i = 0; i < arr.length(); i++) {
-            JSONObject conf = arr.getJSONObject(i);
-            double confidence = conf.getDouble("confidence");
+		for (int i = 0; i < arr.length(); i++) {
+			JSONObject conf = arr.getJSONObject(i);
+			double confidence = conf.getDouble("confidence");
 
-            if (confidence < MIN_CONFIDENCE) {
-                break;
-            }
+			if (confidence < MIN_CONFIDENCE) {
+				break;
+			}
 
-            JSONObject tag = conf.getJSONObject("tag");
-            String name = tag.getString("en");
+			JSONObject tag = conf.getJSONObject("tag");
+			String name = tag.getString("en");
 
-            Tag myTag = tagService.addTag(new Tag(name));
+			Tag myTag = tagService.addTag(new Tag(name));
+			connectionService.addImageTagConnection(new Connection(toAdd.getId(), myTag.getId(), toAdd, myTag, confidence));
+		}
 
-            connectionService.addImageTagConnection(new Connection(toAdd.getId(), myTag.getId(), toAdd, myTag, confidence));
-        }
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("{id}")

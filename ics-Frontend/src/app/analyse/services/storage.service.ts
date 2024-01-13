@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
-import { Observable } from "rxjs";
+import {
+    HttpClient,
+    HttpErrorResponse,
+    HttpHeaders,
+    HttpParams, HttpResponse
+} from "@angular/common/http";
+import {catchError, map, Observable, tap, throwError} from "rxjs";
 import { Image } from '../models/image-model.models'
 import {Tag} from "../models/tag-model.models";
 
@@ -13,12 +18,25 @@ export class StorageService {
   constructor(private httpClient: HttpClient) { }
   private readonly api = "http://localhost:7067";
 
-  public add(itemToAdd: string): Observable<Image> {
-    console.log("add");
-    return this.httpClient.post<Image>(`${this.api}/images`, itemToAdd);
-  }
+    private getAuthHeaders(username: string, password: string): HttpHeaders {
+        return new HttpHeaders({
+            Authorization: this.createBasicAuthToken(username, password)
+        });
+    }
 
-  public get(url: string) {
+    public add(itemToAdd: string, username: string, password: string) {
+        const headers = new HttpHeaders({ Authorization: this.createBasicAuthToken(username, password) });
+        return this.httpClient.post(`${this.api}/images/analyze`, itemToAdd, { headers, observe: 'response' })
+            .pipe(
+                tap(response => console.log('Raw Response:', response)),
+                catchError(error => {
+                    console.error('Error in request:', error);
+                    return throwError(() => new Error(error.message));
+                })
+            );
+    }
+
+    public get(url: string) {
     return this.httpClient.get<Image>(`${this.api}/images/url?url=` + url);
   }
 
@@ -39,7 +57,23 @@ export class StorageService {
     return this.httpClient.get<Image[]>(`${this.api}/tags/` + tag);
   }
 
-    public getImagesByUser(userId: number): Observable<Image[]> {
-        return this.httpClient.get<Image[]>(`${this.api}/images/user/${userId}`);
+    getImagesByUser(userId: number, username: string, password: string): Observable<Image[]> {
+        const headers = this.getAuthHeaders(username, password);
+        return this.httpClient.get<Image[]>(`${this.api}/images/user/${userId}`, { headers });
+    }
+
+    analyzeImage(imageUrl: string): Observable<Tag[]> {
+        return this.httpClient.post<Tag[]>(`${this.api}/analyze`, { url: imageUrl });
+    }
+
+    getImages(username: string, password: string) {
+        const headers = new HttpHeaders({
+            Authorization: this.createBasicAuthToken(username, password)
+        });
+        return this.httpClient.get<Image[]>(`${this.api}/images`, { headers });
+    }
+
+    private createBasicAuthToken(username: string, password: string): string {
+        return 'Basic ' + btoa(username + ':' + password);
     }
 }

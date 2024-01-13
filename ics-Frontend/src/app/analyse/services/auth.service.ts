@@ -15,13 +15,9 @@ export class AuthService {
         return this.http.post<any>(`${this.apiUrl}/login`, { username, password }).pipe(
             tap(response => {
                 localStorage.setItem('user', JSON.stringify(response.user));
-                localStorage.setItem('token', response.token); // Assuming the response includes a JWT token
+                localStorage.setItem('token', response.token);
             })
         );
-    }
-
-    register(username: string, password: string): Observable<any> {
-        return this.http.post(`${this.apiUrl}/register`, { username, password });
     }
 
     getCurrentUser() {
@@ -29,6 +25,9 @@ export class AuthService {
         return userData ? JSON.parse(userData) : null;
     }
 
+    register(username: string, password: string): Observable<any> {
+        return this.http.post(`${this.apiUrl}/register`, { username, password });
+    }
 
     logout() {
         localStorage.removeItem('user');
