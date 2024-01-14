@@ -67,7 +67,11 @@ export class GalleryComponent implements OnInit {
                     this._images = response;
                 },
                 (error: HttpErrorResponse) => {
-                    alert(error.message);
+                    if (error.status == 404) {
+                        this._images = [];
+                    } else {
+                        console.error(error);
+                    }
                 }
             );
         } else {
@@ -104,7 +108,11 @@ export class GalleryComponent implements OnInit {
 
       this.images = curr;},
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        if (error.status == 404) {
+            this._images = [];
+        } else {
+            console.error(error);
+        }
       }
     );
   }
@@ -122,7 +130,11 @@ export class GalleryComponent implements OnInit {
       (response: Image[]) => {this._images = response;
         console.log(this._images);},
       (error: HttpErrorResponse) => {
-        alert(error.message);
+          if (error.status == 404) {
+              this._images = [];
+          } else {
+              console.error(error);
+          }
       });
   }
 
@@ -190,10 +202,14 @@ export class GalleryComponent implements OnInit {
   private setImages() {
       const currentUser = this.authService.getCurrentUser();
     if (!localStorage.getItem("connectGallery")!) {
-      this.storageService.getAll(currentUser.username, currentUser.password).subscribe(
+      this.storageService.getImagesByUser(currentUser.username, currentUser.password).subscribe(
         (response: Image[]) => {this._images = response;},
         (error: HttpErrorResponse) => {
-          alert(error.message);
+            if (error.status == 404) {
+                this._images = [];
+            } else {
+                console.error(error);
+            }
         }
       );
     } else {
@@ -204,7 +220,11 @@ export class GalleryComponent implements OnInit {
           localStorage.removeItem("connectGallery");
         },
         (error: HttpErrorResponse) => {
-          alert(error.message);
+            if (error.status == 404) {
+                this._images = [];
+            } else {
+                console.error(error);
+            }
         }
       );
     }

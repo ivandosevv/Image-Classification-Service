@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Observable} from "rxjs";
+import {Image} from "../models/image-model.models";
 
 @Injectable({
     providedIn: 'root'
@@ -33,6 +34,13 @@ export class ImageService {
 
     private createBasicAuthToken(username: string, password: string): string {
         return 'Basic ' + btoa(username + ':' + password);
+    }
+
+    getImagesByTag(tagName: string, username: string, password: string): Observable<Image[]> {
+        const headers = new HttpHeaders({
+            Authorization: 'Basic ' + btoa(username + ':' + password)
+        });
+        return this.http.get<Image[]>(`http://localhost:7067/tag/${tagName}`, { headers });
     }
 
 }
