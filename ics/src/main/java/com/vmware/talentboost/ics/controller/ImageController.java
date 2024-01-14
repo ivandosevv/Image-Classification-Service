@@ -70,6 +70,12 @@ public class ImageController {
         return imageService.getAllImages();
     }
 
+	@GetMapping("/user/{username}")
+	public ResponseEntity<List<Image>> getImagesByUser(@PathVariable String username) {
+		List<Image> userImages = imageService.getImagesByUser(username);
+		return new ResponseEntity<>(userImages, HttpStatus.OK);
+	}
+
     @GetMapping("{id}")
     public Image get(@PathVariable Integer id) {
         try {
@@ -104,7 +110,7 @@ public class ImageController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody final ImageUploadRequest request) throws IOException {
+    public ResponseEntity<Image> create(@RequestBody final ImageUploadRequest request) throws IOException {
 		User user = userService.authenticate(request.username, request.password);
 		if (user == null) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -122,7 +128,7 @@ public class ImageController {
         Image toAdd = new Image();
         try {
              toAdd = new Image(imageURL, new Timestamp(datetime), "Imagga", realImage.getWidth(null),
-                realImage.getHeight(null));
+                realImage.getHeight(null), user);
 
             this.imageService.addImage(toAdd);
         } catch (Exception e) {
@@ -151,7 +157,7 @@ public class ImageController {
 			connectionService.addImageTagConnection(new Connection(toAdd.getId(), myTag.getId(), toAdd, myTag, confidence));
 		}
 
-		return new ResponseEntity<>(HttpStatus.CREATED);
+		return new ResponseEntity<>(toAdd, HttpStatus.CREATED);
     }
 
     @DeleteMapping("{id}")

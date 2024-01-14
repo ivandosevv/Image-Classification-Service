@@ -53,12 +53,14 @@ export class ImageContainerComponent implements OnInit {
   }
 
   public isWide(): boolean {
+      console.log(this.image);
     console.log(this.image?.width);
     console.log(this.image?.height);
     return this.image?.width! <= this.image?.height!;
   }
 
   public isTall(): boolean {
+      console.log(this.image);
     return this.image?.width! > this.image?.height!;
   }
 

@@ -2,6 +2,8 @@ package com.vmware.talentboost.ics.service.impl;
 
 import com.vmware.talentboost.ics.data.Connection;
 import com.vmware.talentboost.ics.data.Image;
+import com.vmware.talentboost.ics.data.User;
+import com.vmware.talentboost.ics.repository.UserRepository;
 import com.vmware.talentboost.ics.repository.jpa.JpaImageRepository;
 import com.vmware.talentboost.ics.service.ImageService;
 import org.springframework.stereotype.Service;
@@ -13,8 +15,11 @@ import java.util.*;
 public class JpaImageServiceImpl implements ImageService {
     private JpaImageRepository repository;
 
-    public JpaImageServiceImpl(JpaImageRepository repository) {
+	private UserRepository userRepository;
+
+    public JpaImageServiceImpl(JpaImageRepository repository, UserRepository userRepository) {
         this.repository = repository;
+		this.userRepository = userRepository;
     }
 
     @Override
@@ -75,6 +80,14 @@ public class JpaImageServiceImpl implements ImageService {
 
         throw new NoSuchElementException("Image with id: " + id + " doesn't exist");
     }
+
+	public List<Image> getImagesByUser(String username) {
+		User user = userRepository.findByUsername(username);
+		if (user != null) {
+			return this.repository.findByUser(user);
+		}
+		return new ArrayList<>();
+	}
 
     @Override
     public List<Image> saveAll(List<Image> images) {

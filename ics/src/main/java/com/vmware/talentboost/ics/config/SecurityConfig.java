@@ -13,6 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -37,6 +39,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.passwordEncoder(passwordEncoder);
 	}
 
+	@Bean
+	public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
+		StrictHttpFirewall firewall = new StrictHttpFirewall();
+		firewall.setAllowUrlEncodedDoubleSlash(true);
+		return firewall;
+	}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
@@ -45,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.antMatchers("/users/register").permitAll()
 				.antMatchers("/users/login").permitAll()
-				.antMatchers("/images/analyze").authenticated()
+				.antMatchers("/images/**").authenticated()
 				.antMatchers("/tags/**").authenticated()
 				.anyRequest().authenticated()
 				.and()

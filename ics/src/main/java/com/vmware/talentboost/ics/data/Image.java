@@ -125,12 +125,13 @@ public class Image {
             '}';
     }
 
-    public Image(String url, Timestamp addedOn, String service, double width, double height) {
+    public Image(String url, Timestamp addedOn, String service, double width, double height, User user) {
         this.url = url;
         this.addedOn = addedOn;
         this.service = service;
         this.width = width;
         this.height = height;
+		this.user = user;
     }
 
     public List<Pair<String, Integer>> getConnections() {

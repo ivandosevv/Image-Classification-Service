@@ -68,6 +68,8 @@ export class ImageAnalyzerComponent implements OnInit {
             return;
         }
 
+        console.log(currUser);
+
         if (!this._imgFormGroup.valid) {
             alert('Current form is invalid');
             return;
@@ -82,12 +84,16 @@ export class ImageAnalyzerComponent implements OnInit {
         }
 
         const currentUser = this.authService.getCurrentUser();
+        console.log(currentUser);
         if (currentUser) {
-            this.storageService.add(actualURL, currentUser.username, currentUser.password).subscribe(() => {
+            this.storageService.add(actualURL, currentUser.username, currentUser.password).subscribe((response: Image) => {
+                console.log(response);
+                this._image = response;
                 // Call backend service to analyze the image and fetch tags
-                this.storageService.analyzeImage(actualURL).subscribe(
-                    (response: Tag[]) => {
-                        this._tags$ = response;
+                this.storageService.getTags(response.id, currentUser.username, currentUser.password).subscribe(
+                    (resTags: Tag[]) => {
+                        console.log(resTags);
+                        this._tags$ = resTags;
                         this._loadPopUp = true; // Assuming this controls the display of tags
                     },
                     error => {

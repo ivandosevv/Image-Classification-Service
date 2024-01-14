@@ -41,10 +41,11 @@ export class GalleryComponent implements OnInit {
   public initialized = false;
 
   ngOnInit(): void {
-    this.setImages();
+      const currentUser = this.authService.getCurrentUser();
+    // this.setImages();
     this.loadUserSpecificImages();
 
-    this.storageService.getAllTags().subscribe(
+    this.storageService.getAllTags(currentUser.username, currentUser.password).subscribe(
       (response: Tag[]) => {this._options = response;},
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -59,8 +60,9 @@ export class GalleryComponent implements OnInit {
   }
     private loadUserSpecificImages(): void {
         const currentUser = this.authService.getCurrentUser();
+        console.log(currentUser);
         if (currentUser) {
-            this.storageService.getImagesByUser(currentUser.id, currentUser.username, currentUser.password).subscribe(
+            this.storageService.getImagesByUser(currentUser.username, currentUser.password).subscribe(
                 (response: Image[]) => {
                     this._images = response;
                 },
@@ -75,15 +77,16 @@ export class GalleryComponent implements OnInit {
 
   private filterProper(name: string): Tag[] {
     const filterValue = name.toLowerCase();
-    return this.options.filter(option => option.name.toLowerCase().startsWith(filterValue));
+    return this.options.filter(option => option.en.toLowerCase().startsWith(filterValue));
   }
 
   displayProper(tag: Tag): string {
-    return tag && tag.name ? tag.name: '';
+    return tag && tag.en ? tag.en: '';
   }
 
   public loadImagesByTag(): void {
-    this.storageService.getAll().subscribe(
+      const currentUser = this.authService.getCurrentUser();
+    this.storageService.getAll(currentUser.username, currentUser.password).subscribe(
       (response: Image[]) => { this.images = response;
       if (!this.inputTag?.nativeElement.value) {
         alert("The form is invalid!");
@@ -107,6 +110,7 @@ export class GalleryComponent implements OnInit {
   }
 
   public searchByTagParameter(actualTag: string): void {
+      const currentUser = this.authService.getCurrentUser();
     //this.ngOnInit();
 
     if (actualTag == '') {
@@ -114,7 +118,7 @@ export class GalleryComponent implements OnInit {
       return;
     }
 
-    this.storageService.getImagesByTag(actualTag).subscribe(
+    this.storageService.getImagesByTag(actualTag, currentUser.username, currentUser.password).subscribe(
       (response: Image[]) => {this._images = response;
         console.log(this._images);},
       (error: HttpErrorResponse) => {
@@ -184,8 +188,9 @@ export class GalleryComponent implements OnInit {
   }
 
   private setImages() {
+      const currentUser = this.authService.getCurrentUser();
     if (!localStorage.getItem("connectGallery")!) {
-      this.storageService.getAll().subscribe(
+      this.storageService.getAll(currentUser.username, currentUser.password).subscribe(
         (response: Image[]) => {this._images = response;},
         (error: HttpErrorResponse) => {
           alert(error.message);
@@ -193,7 +198,7 @@ export class GalleryComponent implements OnInit {
       );
     } else {
       console.log(localStorage.getItem("connectGallery")!);
-      this.storageService.getImagesByTag(localStorage.getItem("connectGallery")!).subscribe(
+      this.storageService.getImagesByTag(localStorage.getItem("connectGallery")!, currentUser.username, currentUser.password).subscribe(
         (response: Image[]) => {
           this._images = response;
           localStorage.removeItem("connectGallery");

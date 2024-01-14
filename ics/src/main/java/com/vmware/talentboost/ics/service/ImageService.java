@@ -13,6 +13,8 @@ public interface ImageService {
 
     Image getImageByURL(String URL);
 
+	List<Image> getImagesByUser(String username);
+
     Image getImageById(int id);
 
     List<Image> get(Set<Integer> ids);

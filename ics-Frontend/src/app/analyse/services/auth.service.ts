@@ -15,7 +15,7 @@ export class AuthService {
         return this.http.post<any>(`${this.apiUrl}/login`, { username, password }).pipe(
             tap(response => {
                 if (response.username) {
-                    localStorage.setItem('user', JSON.stringify({ username: response.username, password: response.password }));
+                    localStorage.setItem('user', JSON.stringify({ username: response.username, password: password }));
                     console.log('User data saved:', response.username);
                 } else {
                     console.error('Login response missing username:', response);

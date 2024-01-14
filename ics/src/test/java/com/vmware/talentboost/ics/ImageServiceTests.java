@@ -3,6 +3,7 @@ package com.vmware.talentboost.ics;
 import com.vmware.talentboost.ics.data.Connection;
 import com.vmware.talentboost.ics.data.Image;
 import com.vmware.talentboost.ics.data.Tag;
+import com.vmware.talentboost.ics.repository.UserRepository;
 import com.vmware.talentboost.ics.repository.jpa.JpaImageRepository;
 import com.vmware.talentboost.ics.service.ImageService;
 import com.vmware.talentboost.ics.service.impl.JpaImageServiceImpl;
@@ -24,11 +25,15 @@ import static org.mockito.Mockito.*;
 public class ImageServiceTests {
     @Mock
     private JpaImageRepository repository;
+
+	@Mock
+	private UserRepository userRepository;
+
     private ImageService service;
 
     @BeforeEach
     void setUp() {
-        this.service = new JpaImageServiceImpl(this.repository);
+        this.service = new JpaImageServiceImpl(this.repository, this.userRepository);
     }
 
     @Test
