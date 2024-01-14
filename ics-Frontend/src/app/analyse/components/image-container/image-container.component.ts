@@ -3,6 +3,8 @@ import {Image} from "../../models/image-model.models";
 import {Tag} from "../../models/tag-model.models";
 import {GalleryComponent} from "../gallery/gallery.component";
 import {ImageAnalyzerComponent} from "../image-analyzer/image-analyzer.component";
+import {ImageService} from "../../services/image.service";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-image-container',
@@ -18,11 +20,15 @@ export class ImageContainerComponent implements OnInit {
   showConfidence: boolean;
   currConfidence: number = 0;
 
-  constructor(private gallery: GalleryComponent, private analyzer: ImageAnalyzerComponent) {
+  tagsMap: Map<string, number> = new Map;
+
+  constructor(private gallery: GalleryComponent, private analyzer: ImageAnalyzerComponent,
+              private imageService: ImageService, private authService: AuthService) {
     this.showConfidence = false;
   }
 
   ngOnInit(): void {
+      this.loadTags();
   }
 
   public showPopOver(confidence: number): void {
@@ -75,5 +81,22 @@ export class ImageContainerComponent implements OnInit {
     const myFormattedDate = day+"-"+(monthIndex+1)+"-"+year+" "+ hours+":"+minutes+":"+seconds;
     return myFormattedDate;
   }
+
+    loadTags() {
+        const currUser = this.authService.getCurrentUser();
+
+        if (!currUser) {
+            console.error('No current user found');
+            return;
+        }
+
+        if (currUser && this.image?.id) {
+            this.imageService.getTagsByImageId(this.image?.id, currUser.username, currUser.password)
+                .subscribe(
+                    tagsMap => this.tagsMap = tagsMap,
+                    error => console.error('Error fetching tags:', error)
+                );
+        }
+    }
 
 }

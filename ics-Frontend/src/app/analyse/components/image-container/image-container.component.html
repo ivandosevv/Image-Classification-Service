@@ -1,39 +1,46 @@
 <div class="imageWrapper">
-  <button type="button" id="exitPopUp" (click)="exitContainer($event)">X</button>
+    <button type="button" id="exitPopUp" (click)="exitContainer($event)">X</button>
 
-  <div class="actualContentWide" *ngIf="isTall()">
-    <div class = "image">
-      <img src="{{ image?.url}}" alt="">
+    <div *ngIf="isTall(); else contentHigh" class="actualContentWide">
+        <ng-container *ngTemplateOutlet="imageContent"></ng-container>
+        <div class="tags-wide">
+            <ng-container *ngTemplateOutlet="tagsContent"></ng-container>
+        </div>
+        <span class="date">Added on: {{ convertDate(image?.addedOn) }}</span>
     </div>
-  <div class = "tags-wide">
-    <div *ngFor="let tg of image?.connections" >
-      <a title="Confidence: {{currConfidence}}%"class="connectTag" id="first" routerLink="/gallery" (mouseover)="showPopOver(tg.confidence)"
-         (mouseout)="hidePopOver()"
-         (click)="saveItemToStorage(tg.name); exitContainer($event); ">
-        {{tg?.name}}
-      </a>
-    </div>
-  </div>
-    <span class = "date">Added on:  {{convertDate(image?.addedOn)}}</span>
 
-  </div>
+    <ng-template #contentHigh>
+        <div class="actualContentHigh">
+            <ng-container *ngTemplateOutlet="imageContent"></ng-container>
+            <div class="info">
+                <div class="tags-high">
+                    <div class="tag-item" *ngFor="let tg of image?.connections">
+                        <ng-container *ngTemplateOutlet="tagItem; context: {tag: tg}"></ng-container>
+                    </div>
+                </div>
+                <span class="date">Added on: <br> {{ convertDate(image?.addedOn) }}</span>
+            </div>
+        </div>
+    </ng-template>
 
+    <ng-template #imageContent>
+        <div class="image">
+            <img src="{{ image?.url }}" alt="">
+        </div>
+    </ng-template>
 
-  <div class="actualContentHigh" *ngIf="isWide()">
-    <div class = "image">
-      <img src="{{ image?.url}}" alt="">
-    </div>
-    <div class = "info">
-    <div class = "tags-high">
-      <div class = "tag-item" *ngFor="let tg of image?.connections">
-        <a title="Confidence: {{currConfidence}}%"class="connectTag" id="first" routerLink="/gallery" (mouseover)="showPopOver(tg.confidence)"
-           (mouseout)="hidePopOver()"
-           (click)="saveItemToStorage(tg.name); exitContainer($event); ">
-          {{tg?.name}}
+    <ng-template #tagsContent>
+        <div *ngFor="let tag of tagsMap | keyvalue">
+            <ng-container *ngTemplateOutlet="tagItem; context: {tg: tag}"></ng-container>
+        </div>
+    </ng-template>
+
+    <ng-template #tagItem let-tg="tg">
+        <a title="Confidence: {{ tg.value }}%" class="connectTag" id="first" routerLink="/gallery"
+           (mouseover)="showPopOver(tg.value)" (mouseout)="hidePopOver()"
+           (click)="saveItemToStorage(tg.key); exitContainer($event);">
+            {{ tg.key }}
         </a>
-      </div>
-    </div>
-      <span class = "date">Added on:  <br> {{convertDate(image?.addedOn)}}</span>
+    </ng-template>
 
-  </div>
 </div>
