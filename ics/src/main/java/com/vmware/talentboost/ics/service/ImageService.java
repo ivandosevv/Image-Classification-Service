@@ -7,6 +7,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 public interface ImageService {
     List<Image> getAllImages();
@@ -19,7 +20,7 @@ public interface ImageService {
 
     List<Image> get(Set<Integer> ids);
 
-    Image addImage(Image image);
+	CompletableFuture<Image> addImage(Image image);
 
     Image updateImage(int id, Image image);
 

@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -126,11 +128,12 @@ public class ImageController {
         URL url = new URL(imageURL);
         java.awt.Image realImage = new ImageIcon(url).getImage();
         Image toAdd = new Image();
+		CompletableFuture<Image> imageFuture;
         try {
              toAdd = new Image(imageURL, new Timestamp(datetime), "Imagga", realImage.getWidth(null),
                 realImage.getHeight(null), user);
 
-            this.imageService.addImage(toAdd);
+            imageFuture = this.imageService.addImage(toAdd);
         } catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -157,8 +160,13 @@ public class ImageController {
 			connectionService.addImageTagConnection(new Connection(toAdd.getId(), myTag.getId(), toAdd, myTag, confidence));
 		}
 
-		return new ResponseEntity<>(toAdd, HttpStatus.CREATED);
-    }
+		try {
+			Image resultImage = imageFuture.get();
+			return ResponseEntity.ok(resultImage);
+		} catch (InterruptedException | ExecutionException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(toAdd);
+		}
+	}
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable final Integer id) {

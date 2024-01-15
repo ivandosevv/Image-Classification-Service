@@ -101,7 +101,7 @@ export class ImageAnalyzerComponent implements OnInit {
                     (resTags: Tag[]) => {
                         console.log(resTags);
                         this._tags$ = resTags;
-                        this._loadPopUp = true; // Assuming this controls the display of tags
+                        this._loadPopUp = true;
                     },
                     error => {
                         console.error('Error:', error);

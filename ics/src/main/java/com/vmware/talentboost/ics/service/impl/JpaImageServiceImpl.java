@@ -6,12 +6,17 @@ import com.vmware.talentboost.ics.data.User;
 import com.vmware.talentboost.ics.repository.UserRepository;
 import com.vmware.talentboost.ics.repository.jpa.JpaImageRepository;
 import com.vmware.talentboost.ics.service.ImageService;
+
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 @Service
+@EnableAsync
 public class JpaImageServiceImpl implements ImageService {
     private JpaImageRepository repository;
 
@@ -53,13 +58,13 @@ public class JpaImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Image addImage(Image image) {
-        if (!this.repository.getImageByUrl(image.getUrl()).isPresent()) {
-            return this.repository.saveAndFlush(image);
-        }
-
-        //return this.repository.getImageByUrl(image.getUrl()).get();
-        throw new IllegalArgumentException("Already exists");
+	@Async
+    public CompletableFuture<Image> addImage(Image image) {
+		if (!this.repository.getImageByUrl(image.getUrl()).isPresent()) {
+			Image savedImage = this.repository.saveAndFlush(image);
+			return CompletableFuture.completedFuture(savedImage);
+		}
+		throw new IllegalArgumentException("Already exists");
     }
 
     @Override
