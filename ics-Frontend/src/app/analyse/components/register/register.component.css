@@ -1,6 +1,6 @@
 .container {
     max-width: 400px;
-    margin: auto;
+    margin: 0 auto; /* Center the container */
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -18,20 +18,30 @@ label {
 input[type="text"], input[type="password"] {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
     border-radius: 4px;
+    border: 1px solid #ccc;
 }
 
-button {
+.btn {
     width: 100%;
     padding: 10px;
-    border: none;
     border-radius: 4px;
-    color: #fff;
+    border: none;
+    color: white;
     background-color: #007bff;
     cursor: pointer;
 }
 
-button:disabled {
-    background-color: #ccc;
+.btn:disabled {
+    background-color: #cccccc;
+}
+
+/* Add specific styling for the link button if needed */
+.btn-link {
+    color: #007bff; /* Link color */
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    text-decoration: underline;
+    cursor: pointer;
 }

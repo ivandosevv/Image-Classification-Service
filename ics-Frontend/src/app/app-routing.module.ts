@@ -5,15 +5,15 @@ import {ImageAnalyzerComponent} from "./analyse/components/image-analyzer/image-
 import {ImageContainerComponent} from "./analyse/components/image-container/image-container.component";
 import {LoginComponent} from "./analyse/components/login/login.component";
 import {RegisterComponent} from "./analyse/components/register/register.component";
+import {AuthGuard} from "./analyse/services/auth.guard";
 
 const routes: Routes = [
-  {path: "gallery", component: GalleryComponent},
-  {path: "index", component: ImageAnalyzerComponent},
+  {path: "gallery", component: GalleryComponent, canActivate: [AuthGuard]},
+  {path: "index", component: ImageAnalyzerComponent, canActivate: [AuthGuard]},
     { path: "login", component: LoginComponent },
     { path: "register", component: RegisterComponent },
     { path: "", redirectTo: '/index', pathMatch: 'full' },
     { path: '**', component: LoginComponent }
-  //{path: "tags", component: ImageContainerComponent}
 ];
 
 @NgModule({

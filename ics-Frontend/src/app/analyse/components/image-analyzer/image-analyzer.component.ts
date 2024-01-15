@@ -18,6 +18,7 @@ import {GalleryComponent} from "../gallery/gallery.component";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
 import {AuthService} from "../../services/auth.service";
+import {Route, Router} from "@angular/router";
 
 @Component({
     selector: 'app-image-analyzer',
@@ -36,7 +37,8 @@ export class ImageAnalyzerComponent implements OnInit {
     constructor(private storageService: StorageService,
                 private authService: AuthService,
                 private formBuilder: FormBuilder,
-                private _elementRef: ElementRef) {
+                private _elementRef: ElementRef,
+                private router: Router) {
         this._loadPopUp = false;
         this._imgFormGroup = this.formBuilder.group({
             inputURL: ['', [Validators.required]],
@@ -48,6 +50,11 @@ export class ImageAnalyzerComponent implements OnInit {
     }
 
     ngOnInit(): void {
+    }
+
+    logout() {
+        this.authService.logout();
+        this.router.navigate(['/login']);
     }
 
     public validURL(str: string): boolean {

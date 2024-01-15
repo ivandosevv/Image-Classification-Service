@@ -1,7 +1,9 @@
-.login-container {
+.container {
     max-width: 400px;
-    margin: 0 auto;
+    margin: 0 auto; /* Center the container */
     padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 .form-group {
@@ -13,18 +15,17 @@ label {
     margin-bottom: 5px;
 }
 
-input[type="text"],
-input[type="password"] {
+input[type="text"], input[type="password"] {
     width: 100%;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 4px;
     border: 1px solid #ccc;
 }
 
 .btn {
     width: 100%;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 4px;
     border: none;
     color: white;
     background-color: #007bff;
@@ -33,4 +34,14 @@ input[type="password"] {
 
 .btn:disabled {
     background-color: #cccccc;
+}
+
+/* Add specific styling for the link button if needed */
+.btn-link {
+    color: #007bff; /* Link color */
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    text-decoration: underline;
+    cursor: pointer;
 }
