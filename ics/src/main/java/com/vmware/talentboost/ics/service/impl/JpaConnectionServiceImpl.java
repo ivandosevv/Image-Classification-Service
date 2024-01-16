@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JpaConnectionServiceImpl implements ConnectionService {
-    //private JpaImageRepository imageRepository;
-    //private JpaTagRepository tagRepository;
     private JpaConnectionRepository connectionRepository;
 
     public JpaConnectionServiceImpl(JpaConnectionRepository connectionRepository) {
@@ -23,12 +21,5 @@ public class JpaConnectionServiceImpl implements ConnectionService {
     @Override
     public Connection addImageTagConnection(Connection connection) {
         return this.connectionRepository.saveAndFlush(connection);
-//
-//        if (this.connectionRepository.getConnectionByImageId(connection.getId().getImageId()).isEmpty()
-//            && this.connectionRepository.getConnectionByTagId(connection.getId().getTagId()).isEmpty()) {
-//            return this.connectionRepository.saveAndFlush(connection);
-//        }
-//
-//        return this.connectionRepository.get(connection.getId().getImageId());
     }
 }

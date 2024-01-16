@@ -5,6 +5,9 @@ import com.vmware.talentboost.ics.data.Image;
 import com.vmware.talentboost.ics.data.Tag;
 import com.vmware.talentboost.ics.repository.jpa.JpaTagRepository;
 import com.vmware.talentboost.ics.service.TagService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,6 +19,7 @@ import java.util.Set;
 @Service
 public class JpaTagServiceImpl implements TagService {
     private final JpaTagRepository repository;
+	private static final Logger LOGGER = LoggerFactory.getLogger(JpaTagServiceImpl.class);
 
     public JpaTagServiceImpl(JpaTagRepository repository) {
         this.repository = repository;

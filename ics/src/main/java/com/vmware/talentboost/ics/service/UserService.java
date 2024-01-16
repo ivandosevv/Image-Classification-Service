@@ -4,6 +4,10 @@ import java.util.Collections;
 
 import com.vmware.talentboost.ics.data.User;
 import com.vmware.talentboost.ics.repository.UserRepository;
+import com.vmware.talentboost.ics.service.impl.JpaTagServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,11 +23,14 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	private UserRepository userRepository;
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		LOGGER.info("Loading user by username {}:", username);
 		User user = userRepository.findByUsername(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found with username: " + username);
@@ -41,15 +48,17 @@ public class UserService implements UserDetailsService {
 	}
 
 	public User register(User user) {
+		LOGGER.info("Registering user {}:", user);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return userRepository.save(user);
 	}
 
 	public User authenticate(String username, String password) {
+		LOGGER.info("Authenticating user by username {}:", username);
 		User user = userRepository.findByUsername(username);
 		if (user != null) {
 			boolean passwordMatch = passwordEncoder.matches(password, user.getPassword());
-			System.out.println("User found: " + user.getUsername() + ", Password match: " + passwordMatch);
+			LOGGER.info("User found: " + user.getUsername() + ", Password match: " + passwordMatch);
 			if (passwordMatch) {
 				return user;
 			}

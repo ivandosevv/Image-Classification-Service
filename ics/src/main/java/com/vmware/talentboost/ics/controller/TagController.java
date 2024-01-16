@@ -7,6 +7,9 @@ import com.vmware.talentboost.ics.dto.ImageDto;
 import com.vmware.talentboost.ics.dto.TagDto;
 import com.vmware.talentboost.ics.service.ImageService;
 import com.vmware.talentboost.ics.service.TagService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -26,6 +29,8 @@ import java.util.stream.Collectors;
 public class TagController {
 	private final TagService tagService;
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(TagController.class);
+
 	@Autowired
 	public TagController(TagService tagService) {
 		this.tagService = tagService;
@@ -33,18 +38,20 @@ public class TagController {
 
 	@GetMapping
 	public ResponseEntity<List<Tag>> getAllTags() {
+		LOGGER.info("Fetching all tags");
 		List<Tag> tags = tagService.getAllTags();
-		return ResponseEntity.ok(tags); // Simplified return statement
+		return ResponseEntity.ok(tags);
 	}
 
 	@GetMapping(value = "{name}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Image>> getImagesByTagName(@PathVariable String name) {
+		LOGGER.info("Fetching images by tag name: {}", name);
 		try {
 			List<Connection> connections = tagService.getConnectionsByTagName(name);
 			List<Image> images = connections.stream()
 					.map(Connection::getImage)
 					.collect(Collectors.toList());
-			return ResponseEntity.ok(images); // Simplified return statement
+			return ResponseEntity.ok(images);
 		} catch (NoSuchElementException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
@@ -52,12 +59,12 @@ public class TagController {
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody final TagDto tagDto) {
+		LOGGER.info("Creating a new tag: {}", tagDto.name);
         if (!StringUtils.hasText(tagDto.name)) {
             throw new IllegalArgumentException("Tag name must be specified.");
         }
 
         final Tag tagToCreate = new Tag();
-        System.out.println(tagDto.name);
         tagToCreate.setName(tagDto.name);
 
         tagService.addTag(tagToCreate);
@@ -66,6 +73,7 @@ public class TagController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable final Integer id) {
+		LOGGER.info("Deleting tag with ID: {}", id);
         if (id == null) {
             throw new IllegalArgumentException("Tag ID must be specified.");
         }
@@ -81,6 +89,7 @@ public class TagController {
     @PutMapping("{id}")
     public ResponseEntity<Void> edit(@PathVariable final Integer id,
                                      @RequestBody final TagDto tagDto) {
+		LOGGER.info("Editing tag with ID: {}", id);
         if (!StringUtils.hasText(tagDto.name)) {
             throw new IllegalArgumentException("Tag title must be specified.");
         }
