@@ -1,49 +1,47 @@
 package com.vmware.talentboost.ics.analyzer;
 
-import com.vmware.talentboost.ics.data.Connection;
-import com.vmware.talentboost.ics.data.Tag;
-import org.springframework.data.util.Pair;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
+
+import com.vmware.talentboost.ics.controller.ImageController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ImageAnalyzer {
-    public static String sendRequestToAnalyzer(String image_url) throws IOException {
-        String credentialsToEncode = "acc_c223ba209ea5b63" + ":" + "1bf1c64a17b90a04b2c135467eae4831";
-        String basicAuth = Base64.getEncoder().encodeToString(credentialsToEncode.getBytes(StandardCharsets.UTF_8));
+	private static final Logger LOGGER = LoggerFactory.getLogger(ImageController.class);
 
-        String endpoint_url = "https://api.imagga.com/v2/tags";
-        //String image_url = "http://playground.imagga.com/static/img/example_photos/japan-605234_1280.jpg";
+	public static String sendRequestToAnalyzer(String image_url) throws IOException {
+		String credentialsToEncode = "acc_c223ba209ea5b63" + ":" + "1bf1c64a17b90a04b2c135467eae4831";
+		String basicAuth = Base64.getEncoder().encodeToString(credentialsToEncode.getBytes(StandardCharsets.UTF_8));
 
-        String url = endpoint_url + "?image_url=" + image_url;
-        URL urlObject = new URL(url);
-        HttpURLConnection connection = (HttpURLConnection) urlObject.openConnection();
+		String endpoint_url = "https://api.imagga.com/v2/tags";
+		//String image_url = "http://playground.imagga.com/static/img/example_photos/japan-605234_1280.jpg";
 
-        connection.setRequestProperty("Authorization", "Basic " + basicAuth);
+		String url = endpoint_url + "?image_url=" + image_url;
+		URL urlObject = new URL(url);
+		HttpURLConnection connection = (HttpURLConnection) urlObject.openConnection();
 
-        int responseCode = connection.getResponseCode();
+		connection.setRequestProperty("Authorization", "Basic " + basicAuth);
 
-        System.out.println("\nSending 'GET' request to URL : " + url);
-        System.out.println("Response Code : " + responseCode);
+		int responseCode = connection.getResponseCode();
 
-        BufferedReader connectionInput = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		LOGGER.info("\nSending 'GET' request to URL : " + url);
+		LOGGER.info("Response Code : " + responseCode);
 
-        String jsonResponse = connectionInput.readLine();
+		BufferedReader connectionInput = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-        connectionInput.close();
+		String jsonResponse = connectionInput.readLine();
 
-        System.out.println(jsonResponse);
+		connectionInput.close();
 
-        return jsonResponse;
-    }
+		LOGGER.info(jsonResponse);
 
+		return jsonResponse;
+	}
 
 }
