@@ -105,7 +105,7 @@ class ImageControllerTest {
 
 		verify(imageService).getImageByURL(imageUrl);
 	}
-	
+
 	@Test
 	public void testUpdateImage() throws Exception {
 		String imageUrl = "http://example.com/image.jpg";
