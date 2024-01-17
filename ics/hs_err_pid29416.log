@@ -27,7 +27,7 @@
 
 ---------------  S U M M A R Y ------------
 
-Command Line: -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2021.2.3\lib\idea_rt.jar=9489:C:\Program Files\JetBrains\IntelliJ IDEA 2021.2.3\bin -Dfile.encoding=UTF-8 com.vmware.talentboost.ics.IcsApplication
+Command Line: -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2021.2.3\lib\idea_rt.jar=9489:C:\Program Files\JetBrains\IntelliJ IDEA 2021.2.3\bin -Dfile.encoding=UTF-8 com.service.classification.image.IcsApplication
 
 Host: Intel(R) Core(TM) i7-8750H CPU @ 2.20GHz, 12 cores, 23G,  Windows 10 , 64 bit Build 19041 (10.0.19041.1706)
 Time: Tue May 24 17:45:59 2022 FLE Daylight Time elapsed time: 24.466294 seconds (0d 0h 0m 24s)
@@ -259,7 +259,7 @@ Compilation events (20 events):
 Event: 24.346 Thread 0x000001c9f80e1ea0 nmethod 6313 0x000001c9df30d190 code [0x000001c9df30d320, 0x000001c9df30d3f8]
 Event: 24.346 Thread 0x000001c9f80e1ea0 6314       1       sun.util.calendar.CalendarDate::setDayOfWeek (6 bytes)
 Event: 24.346 Thread 0x000001c9f80e1ea0 nmethod 6314 0x000001c9df30d490 code [0x000001c9df30d620, 0x000001c9df30d6f8]
-Event: 24.347 Thread 0x000001c9f80e1ea0 6315       3       com.vmware.talentboost.ics.data.Image::getConnections (198 bytes)
+Event: 24.347 Thread 0x000001c9f80e1ea0 6315       3       data.com.service.classification.image.Image::getConnections (198 bytes)
 Event: 24.349 Thread 0x000001c9f9afa1c0 6317       4       com.fasterxml.jackson.core.json.UTF8JsonGenerator::_verifyValueWrite (143 bytes)
 Event: 24.351 Thread 0x000001c9f80e1ea0 nmethod 6315 0x000001c9d84f8f10 code [0x000001c9d84f9420, 0x000001c9d84fc678]
 Event: 24.351 Thread 0x000001c9f80e1ea0 6316       3       com.fasterxml.jackson.databind.SerializationConfig::isEnabled (18 bytes)
@@ -611,7 +611,7 @@ symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Us
 
 VM Arguments:
 jvm_args: -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2021.2.3\lib\idea_rt.jar=9489:C:\Program Files\JetBrains\IntelliJ IDEA 2021.2.3\bin -Dfile.encoding=UTF-8 
-java_command: com.vmware.talentboost.ics.IcsApplication
+java_command: com.service.classification.image.IcsApplication
 java_class_path (initial): C:\Users\User\Desktop\ics\target\classes;C:\Users\User\.m2\repository\org\json\json\20220320\json-20220320.jar;C:\Users\User\.m2\repository\org\springframework\boot\spring-boot-starter-data-jpa\2.6.7\spring-boot-starter-data-jpa-2.6.7.jar;C:\Users\User\.m2\repository\org\springframework\boot\spring-boot-starter-aop\2.6.7\spring-boot-starter-aop-2.6.7.jar;C:\Users\User\.m2\repository\org\springframework\spring-aop\5.3.19\spring-aop-5.3.19.jar;C:\Users\User\.m2\repository\org\aspectj\aspectjweaver\1.9.7\aspectjweaver-1.9.7.jar;C:\Users\User\.m2\repository\org\springframework\boot\spring-boot-starter-jdbc\2.6.7\spring-boot-starter-jdbc-2.6.7.jar;C:\Users\User\.m2\repository\com\zaxxer\HikariCP\4.0.3\HikariCP-4.0.3.jar;C:\Users\User\.m2\repository\org\springframework\spring-jdbc\5.3.19\spring-jdbc-5.3.19.jar;C:\Users\User\.m2\repository\jakarta\transaction\jakarta.transaction-api\1.3.3\jakarta.transaction-api-1.3.3.jar;C:\Users\User\.m2\repository\jakarta\persistence\jakarta.persistence-api\2.2.3\jakarta.persistence-api-2.2.3.jar;C:\Users\User\.m2\repository\org\hibernate\hibernate-core\5.6.8.Final\hibernate-core-5.6.8.Final.jar;C:\Users\User\.m2\repository\org\jboss\logging\jboss-logging\3.4.3.Final\jboss-logging-3.4.3.Final.jar;C:\Users\User\.m2\repository\net\bytebuddy\byte-buddy\1.11.22\byte-buddy-1.11.22.jar;C:\Users\User\.m2\repository\antlr\antlr\2.7.7\antlr-2.7.7.jar;C:\Users\User\.m2\repository\org\jboss\jandex\2.4.2.Final\jandex-2.4.2.Final.jar;C:\Users\User\.m2\repository\com\fasterxml\classmate\1.5.1\classmate-1.5.1.jar;C:\Users\User\.m2\repository\org\hibernate\common\hibernate-commons-annotations\5.1.2.Final\hibernate-commons-annotations-5.1.2.Final.jar;C:\Users\User\.m2\repository\org\glassfish\jaxb\jaxb-runtime\2.3.6\jaxb-runtime-2.3.6.jar;C:\Users\User\.m2\repository\org\glassfish\jaxb\txw2\2.3.6\txw2-2.3.6.jar;C:\Users\User\.m2\repository\com\sun\istack\istack-commons-runtime\3.0.12\istack-commons-runtime-3.0.12.jar;C:\User
 Launcher Type: SUN_STANDARD
 

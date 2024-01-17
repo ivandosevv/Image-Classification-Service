@@ -120,3 +120,7 @@ label {
   min-width: 150px;
   padding: 10px 20px;
 }
+
+#icon-sign-out {
+    background-color: transparent;
+}

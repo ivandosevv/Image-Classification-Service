@@ -17,6 +17,7 @@ import {ImageContainerComponent} from "../image-container/image-container.compon
 import {GalleryComponent} from "../gallery/gallery.component";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
+import {faSignOut} from '@fortawesome/free-solid-svg-icons';
 import {AuthService} from "../../services/auth.service";
 import {Route, Router} from "@angular/router";
 
@@ -33,6 +34,8 @@ export class ImageAnalyzerComponent implements OnInit {
     private _tags$!: Tag[];
     private _images: Image[] = [];
     private _image?: Image;
+
+    faSignOut = faSignOut;
 
     constructor(private storageService: StorageService,
                 private authService: AuthService,

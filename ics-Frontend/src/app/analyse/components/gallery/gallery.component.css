@@ -27,6 +27,9 @@ button {
   background-color: var(--btn-bg-color);
 }
 
+#icon-sign-out {
+    background-color: transparent;
+}
 
 * {
   margin: 0;

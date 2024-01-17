@@ -19,7 +19,9 @@
             <li class="nav-list-item-analyzer"><a id="first"
                                                   routerLink="/gallery">Gallery</a></li>
             <li class="nav-list-item-analyzer">
-                <button (click)="logout()">Logout</button>
+                <button id="icon-sign-out" (click)="logout()">
+                    <fa-icon [icon]="faSignOut"></fa-icon>
+                </button>
             </li>
         </ul>
     </nav>

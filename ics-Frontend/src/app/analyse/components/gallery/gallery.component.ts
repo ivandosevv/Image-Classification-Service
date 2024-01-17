@@ -14,6 +14,7 @@ import {Tag} from "../../models/tag-model.models";
 import {filter, map, Observable, startWith, timer} from "rxjs";
 import {faSearch} from '@fortawesome/free-solid-svg-icons';
 import {faExpand} from '@fortawesome/free-solid-svg-icons';
+import {faSignOut} from '@fortawesome/free-solid-svg-icons';
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 
@@ -37,6 +38,7 @@ export class GalleryComponent implements OnInit {
     correctTags?: Tag[] = [];
     faSearch = faSearch;
     faExpand = faExpand;
+    faSignOut = faSignOut;
 
     constructor(private storageService: StorageService, private authService: AuthService,
                 private formBuilder: FormBuilder,
