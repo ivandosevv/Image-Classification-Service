@@ -1,9 +1,18 @@
-.container {
-    max-width: 400px;
-    margin: 0 auto; /* Center the container */
+/* login.component.css and register.component.css */
+
+.register-container{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 400px; /* Adjust width as needed */
+    width: 100%;
+    background-color: #F7F7F7;
+    position: fixed;
+    overflow: auto;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    box-shadow: 1px 1px 6px -2px black;
+    border-radius: 10px;
+    margin: 0 auto;
 }
 
 .form-group {
@@ -13,6 +22,7 @@
 label {
     display: block;
     margin-bottom: 5px;
+    color: #252222; /* Text color */
 }
 
 input[type="text"], input[type="password"] {
@@ -20,6 +30,7 @@ input[type="text"], input[type="password"] {
     padding: 10px;
     border-radius: 4px;
     border: 1px solid #ccc;
+    box-sizing: border-box;
 }
 
 .btn {
@@ -28,20 +39,28 @@ input[type="text"], input[type="password"] {
     border-radius: 4px;
     border: none;
     color: white;
-    background-color: #007bff;
-    cursor: pointer;
+    background-color: #010204cc;
+    box-shadow: 1px 1px 6px -2px black;
+    margin-top: 10px;
 }
 
 .btn:disabled {
     background-color: #cccccc;
 }
 
-/* Add specific styling for the link button if needed */
 .btn-link {
-    color: #007bff; /* Link color */
+    color: #010204cc;
     background-color: transparent;
     border: none;
-    padding: 0;
     text-decoration: underline;
     cursor: pointer;
+    display: block;
+    margin-top: 10px;
+}
+
+/* Additional shared styles */
+body {
+    background: linear-gradient(90deg, rgba(71,66,159,1) 17%, rgba(92,129,236,1) 51%);
+    font-family: 'Rubik', sans-serif; /* Font family */
+    color: #252222; /* Text color */
 }
